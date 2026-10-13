@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#651c35">
+  <title>Patchup Mission — A little hope, one honest step at a time</title>
+  <style>
+    :root {
+      --burgundy: #651c35;
+      --burgundy-dark: #421326;
+      --rose: #c94f75;
+      --pink: #f6dce4;
+      --blush: #fff0f3;
+      --cream: #fffaf2;
+      --paper: #ffffff;
+      --ink: #35232a;
+      --muted: #7d6970;
+      --line: #ecd8de;
+      --green: #47745d;
+      --shadow: 0 18px 50px rgba(101, 28, 53, .10);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255,250,242,.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(236,216,222,.85);
+    }
+    .nav {
+      max-width: 1120px; margin: auto; padding: 14px 22px;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 850; color: var(--burgundy); letter-spacing: -.4px; }
+    .brand-mark { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 13px; background: var(--burgundy); color: white; font-size: 20px; }
+    .nav-links { display: flex; gap: 22px; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: .92rem; font-weight: 650; }
+    .nav-links a:hover { color: var(--burgundy); }
+    .hero {
+      overflow: hidden; position: relative;
+      background: radial-gradient(circle at 85% 20%, #f7cbd9 0, transparent 30%),
+                  linear-gradient(135deg, #fff0f3 0%, #fffaf2 65%, #f8e4e7 100%);
+    }
+    .hero-inner {
+      max-width: 1120px; margin: auto; padding: 76px 22px 82px;
+      display: grid; grid-template-columns: 1.2fr .8fr; align-items: center; gap: 46px;
+    }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--rose); font-weight: 800; font-size: .78rem; text-transform: uppercase; letter-spacing: 1.7px; }
+    h1 { font-size: clamp(2.6rem, 5.5vw, 4.7rem); line-height: 1.04; letter-spacing: -2.8px; color: var(--burgundy-dark); margin: 18px 0; max-width: 700px; }
+    h1 span { color: var(--rose); }
+    .hero p { max-width: 590px; color: #725962; font-size: 1.08rem; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 27px; }
+    .btn { border: 0; border-radius: 14px; padding: 13px 19px; font-weight: 800; transition: transform .18s, box-shadow .18s, background .18s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { color: white; background: var(--burgundy); box-shadow: 0 8px 20px rgba(101,28,53,.18); }
+    .btn-primary:hover { background: var(--burgundy-dark); }
+    .btn-secondary { background: white; color: var(--burgundy); border: 1px solid var(--line); }
+    .btn-soft { background: var(--blush); color: var(--burgundy); }
+    .hero-art { min-height: 330px; position: relative; display: grid; place-items: center; }
+    .orbit { width: min(315px, 75vw); aspect-ratio: 1; border: 1px solid #e8b9c8; border-radius: 50%; display: grid; place-items: center; position: relative; }
+    .orbit:before, .orbit:after { content: ""; position: absolute; border: 1px solid #edccd5; border-radius: 50%; }
+    .orbit:before { inset: 22px; } .orbit:after { inset: 44px; }
+    .heart { z-index: 1; width: 150px; height: 150px; display: grid; place-items: center; background: linear-gradient(145deg, #d95b82, #8c2447); color: white; font-size: 72px; border-radius: 45% 55% 48% 52%; transform: rotate(-7deg); box-shadow: 0 22px 45px #b34c6c44; }
+    .float-note { position: absolute; z-index: 2; background: white; padding: 12px 15px; border: 1px solid #f0dce2; box-shadow: var(--shadow); border-radius: 15px; font-size: .86rem; font-weight: 750; }
+    .note-one { top: 20px; right: 0; transform: rotate(4deg); } .note-two { bottom: 25px; left: 0; transform: rotate(-4deg); }
+    .trust-line { max-width: 1120px; margin: -24px auto 0; padding: 0 22px; position: relative; }
+    .trust-card { background: white; border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 18px; padding: 19px 24px; display: flex; justify-content: space-around; gap: 18px; flex-wrap: wrap; }
+    .trust-card span { color: var(--muted); font-size: .9rem; font-weight: 700; }
+    .trust-card b { color: var(--burgundy); }
+    section { max-width: 1120px; margin: auto; padding: 76px 22px; }
+    .section-heading { text-align: center; max-width: 680px; margin: 0 auto 34px; }
+    .section-heading h2 { color: var(--burgundy-dark); font-size: clamp(1.9rem, 4vw, 2.7rem); letter-spacing: -1px; line-height: 1.15; margin: 9px 0 12px; }
+    .section-heading p { color: var(--muted); margin: 0; }
+    .mission-layout { display: grid; grid-template-columns: .78fr 1.22fr; gap: 24px; align-items: start; }
+    .progress-card, .mission-card, .tool-card, .quiz-card { background: white; border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); }
+    .progress-card { padding: 26px; background: var(--burgundy); color: white; position: sticky; top: 86px; }
+    .progress-card h3 { margin: 0 0 8px; font-size: 1.25rem; }
+    .progress-card p { color: #f0d9e1; font-size: .92rem; }
+    .progress-number { font-size: 2.8rem; font-weight: 900; letter-spacing: -2px; margin-top: 22px; }
+    .progress-track { height: 8px; border-radius: 99px; background: #ffffff35; overflow: hidden; margin: 10px 0 18px; }
+    .progress-fill { height: 100%; width: 0%; background: #f7b7cc; border-radius: 99px; transition: width .25s; }
+    .small-note { font-size: .8rem !important; opacity: .9; }
+    .mission-list { display: grid; gap: 13px; }
+    .mission-card { display: grid; grid-template-columns: 48px 1fr auto; gap: 14px; padding: 20px; align-items: start; box-shadow: none; }
+    .step-icon { width: 46px; height: 46px; border-radius: 15px; background: var(--blush); color: var(--burgundy); display: grid; place-items: center; font-size: 1.25rem; }
+    .mission-card h3 { margin: 0 0 5px; font-size: 1.05rem; color: var(--burgundy); }
+    .mission-card p { margin: 0; color: var(--muted); font-size: .91rem; }
+    .mission-card .step-tag { font-size: .72rem; color: var(--rose); font-weight: 850; text-transform: uppercase; letter-spacing: 1px; }
+    .complete-btn { align-self: center; border: 1px solid var(--line); border-radius: 11px; padding: 9px 12px; background: white; color: var(--burgundy); font-size: .82rem; font-weight: 800; white-space: nowrap; }
+    .mission-card.done { border-color: #b5d6c3; background: #fbfffc; }
+    .mission-card.done .step-icon { background: #e2f3e8; color: var(--green); }
+    .mission-card.done .complete-btn { background: var(--green); color: white; border-color: var(--green); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; }
+    .tool-card, .quiz-card { padding: 28px; }
+    .card-kicker { color: var(--rose); font-size: .76rem; letter-spacing: 1.3px; text-transform: uppercase; font-weight: 900; }
+    .tool-card h3, .quiz-card h3 { margin: 7px 0 8px; color: var(--burgundy); font-size: 1.45rem; letter-spacing: -.5px; }
+    .tool-card > p, .quiz-card > p { color: var(--muted); font-size: .93rem; margin-top: 0; }
+    label { display: block; font-size: .87rem; color: var(--burgundy); font-weight: 800; margin: 16px 0 7px; }
+    select, textarea, input[type="text"] { width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; background: #fffdfb; color: var(--ink); outline: none; }
+    select:focus, textarea:focus, input:focus { border-color: var(--rose); box-shadow: 0 0 0 3px #c94f751c; }
+    textarea { min-height: 105px; resize: vertical; }
+    .output { margin-top: 18px; padding: 16px; background: var(--blush); border: 1px solid #f0d4de; border-radius: 14px; white-space: pre-wrap; color: #5d263a; min-height: 82px; font-size: .94rem; }
+    .output:empty { display: none; }
+    .output-actions { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 10px; }
+    .output-actions .btn { padding: 10px 13px; font-size: .85rem; }
+    .quiz-question { padding: 16px 0; border-bottom: 1px solid #f2e5e9; }
+    .quiz-question:last-of-type { border-bottom: 0; }
+    .quiz-question p { margin: 0 0 10px; font-weight: 800; color: var(--ink); }
+    .choices { display: grid; gap: 8px; }
+    .choice { display: flex; align-items: start; gap: 10px; background: #fffaf8; border: 1px solid var(--line); padding: 10px 12px; border-radius: 11px; cursor: pointer; font-size: .9rem; color: #634b54; }
+    .choice:has(input:checked) { border-color: var(--rose); background: var(--blush); color: var(--burgundy); }
+    .choice input { accent-color: var(--burgundy); margin-top: 5px; }
+    .quiz-result { display: none; margin-top: 17px; padding: 17px; border-radius: 14px; background: #f8e8ed; color: var(--burgundy); }
+    .quiz-result.show { display: block; }
+    .quiz-result h4 { margin: 0 0 5px; }
+    .privacy-banner { display: flex; gap: 14px; align-items: flex-start; background: #f9e7ec; border: 1px solid #f0cbd7; border-radius: 18px; padding: 20px; color: #633146; }
+    .privacy-banner strong { display: block; margin-bottom: 4px; }
+    .privacy-banner p { margin: 0; font-size: .91rem; }
+    footer { background: var(--burgundy-dark); color: #f8e7ed; padding: 32px 22px; text-align: center; }
+    footer p { margin: 6px 0; font-size: .86rem; color: #e9cbd5; }
+    .toast { position: fixed; left: 50%; bottom: 22px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--burgundy-dark); color: white; padding: 12px 18px; border-radius: 12px; box-shadow: var(--shadow); transition: .25s; z-index: 20; font-size: .9rem; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    @media (max-width: 780px) {
+      .nav { padding: 12px 16px; } .nav-links { gap: 12px; } .nav-links a { font-size: .8rem; }
+      .hero-inner { grid-template-columns: 1fr; padding: 54px 20px 60px; gap: 18px; }
+      .hero-art { min-height: 270px; } .orbit { width: 250px; } .heart { width: 120px; height: 120px; font-size: 58px; }
+      .mission-layout, .two-col { grid-template-columns: 1fr; }
+      .progress-card { position: static; }
+      section { padding: 58px 18px; }
+    }
+    @media (max-width: 480px) {
+      .brand { font-size: .9rem; } .brand-mark { width: 33px; height: 33px; }
+      .nav-links a:nth-child(2) { display: none; }
+      h1 { letter-spacing: -1.6px; }
+      .mission-card { grid-template-columns: 42px 1fr; padding: 16px; gap: 11px; }
+      .step-icon { width: 40px; height: 40px; }
+      .complete-btn { grid-column: 2; justify-self: start; }
+      .tool-card, .quiz-card { padding: 21px; }
+      .note-one { right: -4px; } .note-two { left: -3px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#home" style="text-decoration:none">
+        <span class="brand-mark">♡</span><span>Patchup Mission</span>
+      </a>
+      <div class="nav-links">
+        <a href="#mission">Mission</a>
+        <a href="#messages">Message helper</a>
+        <a href="#quiz">Relationship quiz</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero" id="home">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">♡ A softer way forward</div>
+          <h1>From heartbreak to <span>healing.</span></h1>
+          <p>A little space to understand what happened, find the right words, and take one honest step at a time. If both people want to reconnect, start with kindness—not pressure.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="#mission" style="text-decoration:none">Start my mission →</a>
+            <a class="btn btn-secondary" href="#messages" style="text-decoration:none">Find the right words</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Decorative heart illustration">
+          <div class="orbit"><div class="heart">♡</div></div>
+          <div class="float-note note-one">One honest conversation 💌</div>
+          <div class="float-note note-two">Small steps count ✨</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-line">
+      <div class="trust-card">
+        <span>♡ <b>No pressure</b> — respect their choice</span>
+        <span>✦ <b>Small steps</b> — no instant fixes</span>
+        <span>☁ <b>Self-respect</b> — your feelings matter too</span>
+      </div>
+    </div>
+
+    <section id="mission">
+      <div class="section-heading">
+        <div class="eyebrow">Your next chapter</div>
+        <h2>The Patchup Mission</h2>
+        <p>Move at your own pace. Mark each step when you feel you've genuinely done it—not just to finish the checklist.</p>
+      </div>
+      <div class="mission-layout">
+        <aside class="progress-card">
+          <h3>Your progress 🌷</h3>
+          <p>Healing isn't a race. You can pause, restart, or choose not to reconnect.</p>
+          <div class="progress-number"><span id="progressCount">0</span><span style="font-size:1.25rem;font-weight:700"> / 5</span></div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <p id="progressMessage">Every meaningful journey starts with one small step.</p>
+          <p class="small-note">Your checklist is saved only in this browser on this device.</p>
+          <button class="btn btn-soft" id="resetMission" type="button">Reset checklist</button>
+        </aside>
+        <div class="mission-list" id="missionList">
+          <article class="mission-card" data-step="0">
+            <div class="step-icon">☁</div><div><div class="step-tag">Step 01 · Pause</div><h3>Give emotions some breathing room</h3><p>Take a little time before sending a message. Write what you feel privately first, and avoid texting repeatedly while upset.</p></div><button class="complete-btn" type="button">Mark done</button>
+          </article>
+          <article class="mission-card" data-step="1">
+            <div class="step-icon">🪞</div><div><div class="step-tag">Step 02 · Reflect</div><h3>Understand what went wrong</h3><p>Separate facts from assumptions. Ask yourself what you could own, what hurt you, and what would need to change.</p></div><button class="complete-btn" type="button">Mark done</button>
+          </article>
+          <article class="mission-card" data-step="2">
+            <div class="step-icon">💌</div><div><div class="step-tag">Step 03 · Prepare</div><h3>Find honest, respectful words</h3><p>Use the message helper below to draft something genuine. Apologize for your actions without excuses or demands.</p></div><button class="complete-btn" type="button">Mark done</button>
+          </article>
+          <article class="mission-card" data-step="3">
+            <div class="step-icon">🫶</div><div><div class="step-tag">Step 04 · Communicate</div><h3>Ask whether they're open to talking</h3><p>Invite a calm conversation, listen without interrupting, and respect a “no” or a request for space.</p></div><button class="complete-btn" type="button">Mark done</button>
+          </article>
+          <article class="mission-card" data-step="4">
+            <div class="step-icon">🌱</div><div><div class="step-tag">Step 05 · Grow</div><h3>Agree on realistic next steps</h3><p>If both of you want to try again, discuss boundaries and specific changes. Trust is rebuilt through consistent actions over time.</p></div><button class="complete-btn" type="button">Mark done</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="messages">
+      <div class="section-heading">
+        <div class="eyebrow">Say what you mean</div>
+        <h2>Message & Apology Helper</h2>
+        <p>Create a starting draft. Make it sound like you, keep it truthful, and only send it if contact is welcome.</p>
+      </div>
+      <div class="two-col">
+        <div class="tool-card">
+          <div class="card-kicker">Your message studio</div>
+          <h3>Find the right words 💌</h3>
+          <p>Choose a situation and tone, then make the draft personal.</p>
+          <label for="situation">What's the situation?</label>
+          <select id="situation">
+            <option value="apology">I need to apologize</option>
+            <option value="misunderstanding">We had a misunderstanding</option>
+            <option value="space">I want to ask for a conversation</option>
+            <option value="reconnect">I'd like to reconnect</option>
+            <option value="closure">I want to respectfully seek closure</option>
+          </select>
+          <label for="tone">Choose a tone</label>
+          <select id="tone">
+            <option value="gentle">Gentle and caring</option>
+            <option value="short">Short and simple</option>
+            <option value="mature">Calm and mature</option>
+          </select>
+          <label for="detail">What do you want to take responsibility for? (optional)</label>
+          <textarea id="detail" placeholder="Example: I interrupted you instead of listening..."></textarea>
+          <div class="actions">
+            <button class="btn btn-primary" id="generateMessage" type="button">Generate draft ✨</button>
+          </div>
+          <div class="output" id="messageOutput" aria-live="polite"></div>
+          <div class="output-actions" id="messageActions" hidden>
+            <button class="btn btn-secondary" id="copyMessage" type="button">Copy message</button>
+            <button class="btn btn-soft" id="regenerateMessage" type="button">Try another version</button>
+          </div>
+        </div>
+
+        <div class="tool-card">
+          <div class="card-kicker">Before you press send</div>
+          <h3>Make it truly yours 🌷</h3>
+          <p>A thoughtful message gives the other person freedom to respond honestly.</p>
+          <div style="display:grid;gap:13px;margin-top:22px">
+            <div style="display:flex;gap:12px"><span class="step-icon" style="flex:0 0 43px">✓</span><div><strong>Be specific</strong><div style="color:var(--muted);font-size:.9rem">Name the action you regret instead of saying only “sorry for everything.”</div></div></div>
+            <div style="display:flex;gap:12px"><span class="step-icon" style="flex:0 0 43px">♡</span><div><strong>Don't demand forgiveness</strong><div style="color:var(--muted);font-size:.9rem">An apology is an offer of accountability, not a way to force a reply.</div></div></div>
+            <div style="display:flex;gap:12px"><span class="step-icon" style="flex:0 0 43px">⌛</span><div><strong>Give them time</strong><div style="color:var(--muted);font-size:.9rem">If they don't respond, avoid repeated messages and respect their boundary.</div></div></div>
+            <div style="display:flex;gap:12px"><span class="step-icon" style="flex:0 0 43px">✦</span><div><strong>Promise only what you can do</strong><div style="color:var(--muted);font-size:.9rem">Real change is shown consistently through actions, not big promises.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <div class="section-heading">
+        <div class="eyebrow">A little self-reflection</div>
+        <h2>Relationship Check-in</h2>
+        <p>This is not a scientific compatibility test. It's a gentle way to reflect on communication, respect, and readiness.</p>
+      </div>
+      <div class="quiz-card" style="max-width:800px;margin:auto">
+        <h3>How are things feeling right now? 🫶</h3>
+        <p>Choose the answer that feels closest to your situation. There are no “perfect” answers.</p>
+        <form id="quizForm">
+          <div class="quiz-question">
+            <p>1. Can both of you speak honestly without fear?</p>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q1" value="2" required> Usually, yes—we can talk openly.</label>
+              <label class="choice"><input type="radio" name="q1" value="1"> Sometimes, but it's difficult.</label>
+              <label class="choice"><input type="radio" name="q1" value="0"> No, it often feels unsafe or hostile.</label>
+            </div>
+          </div>
+          <div class="quiz-question">
+            <p>2. Are both people willing to listen and take responsibility?</p>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q2" value="2" required> Yes, we're both willing to try.</label>
+              <label class="choice"><input type="radio" name="q2" value="1"> I'm unsure whether we're both ready.</label>
+              <label class="choice"><input type="radio" name="q2" value="0"> Only one of us seems willing.</label>
+            </div>
+          </div>
+          <div class="quiz-question">
+            <p>3. Are each other's boundaries respected?</p>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q3" value="2" required> Yes, we respect each other's space.</label>
+              <label class="choice"><input type="radio" name="q3" value="1"> We need to communicate boundaries better.</label>
+              <label class="choice"><input type="radio" name="q3" value="0"> Boundaries are often ignored.</label>
+            </div>
+          </div>
+          <div class="quiz-question">
+            <p>4. What do you most want right now?</p>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q4" value="2" required> To reconnect, if we both genuinely want to.</label>
+              <label class="choice"><input type="radio" name="q4" value="1"> I'm not sure; I need time to think.</label>
+              <label class="choice"><input type="radio" name="q4" value="0"> I mainly want relief from the hurt.</label>
+            </div>
+          </div>
+          <div class="actions"><button class="btn btn-primary" type="submit">See my reflection ✨</button><button class="btn btn-secondary" type="reset" id="resetQuiz">Start again</button></div>
+        </form>
+        <div class="quiz-result" id="quizResult" aria-live="polite">
+          <h4 id="resultTitle"></h4>
+          <p id="resultText" style="margin:0"></p>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="privacy-banner">
+        <div style="font-size:1.6rem">🔒</div>
+        <div>
+          <strong>Your privacy & the limits of this demo</strong>
+          <p>This single-file demo does not send your answers or message drafts to a server. The mission checklist is saved locally in this browser. Real AI-generated replies, secure accounts, and live chat between people require backend services, appropriate security, and privacy safeguards. Don't use this prototype to store sensitive information.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="font-size:1.25rem;font-weight:850">Patchup Mission ♡</div>
+    <p>Hope is welcome. Respect is essential.</p>
+    <p>A website can help you find words; it cannot promise a relationship will be restored.</p>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // ---------- Small helper for friendly on-screen notifications ----------
+    const toast = document.getElementById("toast");
+    let toastTimer;
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
+    }
+
+    // ---------- Patchup mission checklist ----------
+    const missionCards = [...document.querySelectorAll(".mission-card")];
+    const progressCount = document.getElementById("progressCount");
+    const progressFill = document.getElementById("progressFill");
+    const progressMessage = document.getElementById("progressMessage");
+    const STORAGE_KEY = "patchupMissionCompletedV1";
+    let completed = [];
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      if (Array.isArray(saved)) completed = saved.filter(n => Number.isInteger(n) && n >= 0 && n < missionCards.length);
+    } catch (error) {
+      completed = [];
+    }
+
+    function renderMission() {
+      missionCards.forEach((card, index) => {
+        const isDone = completed.includes(index);
+        card.classList.toggle("done", isDone);
+        const button = card.querySelector(".complete-btn");
+        button.textContent = isDone ? "✓ Completed" : "Mark done";
+        button.setAttribute("aria-pressed", String(isDone));
+      });
+      progressCount.textContent = completed.length;
+      progressFill.style.width = `${completed.length / missionCards.length * 100}%`;
+      if (completed.length === 0) progressMessage.textContent = "Every meaningful journey starts with one small step.";
+      else if (completed.length < missionCards.length) progressMessage.textContent = "You're making space for thoughtful choices. Keep going at your pace.";
+      else progressMessage.textContent = "All steps checked off. Remember: real progress is what you practice in life.";
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(completed)); } catch (error) { /* Storage may be disabled. */ }
+    }
+
+    missionCards.forEach((card, index) => {
+      card.querySelector(".complete-btn").addEventListener("click", () => {
+        completed = completed.includes(index) ? completed.filter(n => n !== index) : [...completed, index];
+        renderMission();
+      });
+    });
+    document.getElementById("resetMission").addEventListener("click", () => {
+      completed = [];
+      renderMission();
+      showToast("Your checklist has been reset.");
+    });
+    renderMission();
+
+    // ---------- Message generator: template-based, not real AI ----------
+    const templates = {
+      apology: {
+        gentle: (detail) => `Hey, I've been thinking about what happened. I'm sorry${detail ? ` for ${detail}` : " for my part in what hurt you"}. I understand that my actions may have affected you, and I don't want to make excuses. You don't have to reply right away. If you're open to it, I'd like to listen and understand your feelings. I respect whatever you need.`,
+        short: (detail) => `I'm sorry${detail ? ` for ${detail}` : " for my part in what happened"}. I know words alone don't fix things. If you're comfortable talking sometime, I'd like to listen. I respect your space.`,
+        mature: (detail) => `I've reflected on what happened, and I want to take responsibility${detail ? ` for ${detail}` : " for my part in it"}. I won't ask you to move past it before you're ready. If a conversation would be welcome, I'm willing to listen and discuss what needs to change. I will respect your decision either way.`
+      },
+      misunderstanding: {
+        gentle: (detail) => `I feel sad about how things unfolded between us. I may not have understood your point of view properly${detail ? `, especially around ${detail}` : ""}. If you're willing, I'd appreciate a calm conversation where we can both explain how we felt and listen without blaming each other. No pressure if you need space.`,
+        short: (detail) => `I think we may have misunderstood each other${detail ? ` about ${detail}` : ""}. If you're open to it, can we talk calmly and hear each other out? It's okay if you need time.`,
+        mature: (detail) => `I'd like to understand your perspective rather than assume I know what you meant${detail ? `, particularly about ${detail}` : ""}. If you're comfortable, perhaps we can have a respectful conversation, listen carefully, and see whether there's anything we can resolve.`
+      },
+      space: {
+        gentle: () => `Hi. I don't want to pressure you, but if and when you're comfortable, I'd be grateful for a chance to talk calmly. I want to listen and understand, not argue. If you'd rather not talk, I'll respect that.`,
+        short: () => `Would you be open to a calm conversation sometime? No pressure to say yes. I'll respect your choice and your space.`,
+        mature: () => `I would welcome a conversation if you're willing and feel ready. My intention is to listen and communicate respectfully, not to demand a particular outcome. If you don't want to talk, I understand and will respect your boundary.`
+      },
+      reconnect: {
+        gentle: () => `I've been reflecting on us and the things that mattered in our relationship. I still care, but I know reconnecting has to be something we both want. If you're open to talking, I'd like to hear how you feel and what you would need. There's no pressure to respond.`,
+        short: () => `I still care about you, and I'd be open to talking if you are. I know we both get to choose what happens next, and I'll respect your decision.`,
+        mature: () => `I've thought carefully about our relationship. I'd be willing to explore whether rebuilding a connection makes sense, but only if it feels right for both of us. I'd want us to discuss what happened, our boundaries, and what would genuinely need to change.`
+      },
+      closure: {
+        gentle: () => `I’m still processing what happened, and I hope we can both find peace with time. If you're comfortable having one calm conversation for closure, I'd appreciate it. If not, I respect your choice and wish you well.`,
+        short: () => `If you're comfortable, I'd appreciate a calm conversation for closure. If you'd rather not, I understand and will respect your space.`,
+        mature: () => `I'm working on accepting what happened and moving forward. If a final conversation feels appropriate and welcome to you, I'd appreciate the opportunity to share and listen respectfully. I understand that closure may also need to happen without a conversation.`
+      }
+    };
+    let lastMessage = "";
+    function generateMessage() {
+      const situation = document.getElementById("situation").value;
+      const tone = document.getElementById("tone").value;
+      const detail = document.getElementById("detail").value.trim().replace(/[.!?]+$/g, "");
+      lastMessage = templates[situation][tone](detail);
+      document.getElementById("messageOutput").textContent = lastMessage;
+      document.getElementById("messageActions").hidden = false;
+    }
+    document.getElementById("generateMessage").addEventListener("click", generateMessage);
+    document.getElementById("regenerateMessage").addEventListener("click", () => {
+      // Templates are deterministic, so change tone to offer a distinct alternative.
+      const tone = document.getElementById("tone");
+      const order = ["gentle", "short", "mature"];
+      tone.value = order[(order.indexOf(tone.value) + 1) % order.length];
+      generateMessage();
+      showToast("Here's another tone to consider.");
+    });
+    document.getElementById("copyMessage").addEventListener("click", async () => {
+      if (!lastMessage) return;
+      try {
+        await navigator.clipboard.writeText(lastMessage);
+        showToast("Message copied. Review it before sending.");
+      } catch (error) {
+        const field = document.createElement("textarea");
+        field.value = lastMessage;
+        field.style.position = "fixed";
+        field.style.opacity = "0";
+        document.body.appendChild(field);
+        field.select();
+        const copied = document.execCommand("copy");
+        field.remove();
+        showToast(copied ? "Message copied. Review it before sending." : "Copy failed. Please select and copy the message.");
+      }
+    });
+
+    // ---------- Relationship check-in quiz ----------
+    const quizForm = document.getElementById("quizForm");
+    const quizResult = document.getElementById("quizResult");
+    quizForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!quizForm.reportValidity()) return;
+      const data = new FormData(quizForm);
+      const score = ["q1", "q2", "q3", "q4"].reduce((sum, key) => sum + Number(data.get(key)), 0);
+      let title, text;
+      if (score >= 7) {
+        title = "There may be room for a careful conversation 🌱";
+        text = "Your answers suggest some readiness for respectful communication. If both people want to reconnect, start with listening, clear boundaries, and small actions. This result cannot predict what the other person feels or what will happen.";
+      } else if (score >= 4) {
+        title = "Pause, reflect, and clarify what you need ☁";
+        text = "Some parts may feel uncertain right now. Give yourself time to identify what must change and whether both people are willing to work on it. You do not have to decide today.";
+      } else {
+        title = "Your wellbeing comes first 💗";
+        text = "Your answers suggest that reconnecting may not feel right or safe at the moment. Focus on support, space, and your own wellbeing. You never have to pursue a relationship to prove your love, and you should not ignore fear, pressure, or repeated boundary violations.";
+      }
+      document.getElementById("resultTitle").textContent = title;
+      document.getElementById("resultText").textContent = text;
+      quizResult.classList.add("show");
+      quizResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    document.getElementById("resetQuiz").addEventListener("click", () => {
+      quizResult.classList.remove("show");
+    });
+  </script>
+</body>
+</html>
